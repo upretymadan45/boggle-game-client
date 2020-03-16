@@ -37,26 +37,11 @@ class RandomAlphabet extends Component {
   getRandomAlphabets() {
     const { characters } = this.state;
 
-    var wordArray = new Array(4);
-    for (var i = 0; i < 4; i++) {
-      wordArray[i] = new Array(4);
-    }
+    var wordArray = this.initialize2dArray();
 
-    var word = "";
+    var word = this.generateRandomChars(characters);
 
-    for (var i = 0; i <= 15; i++) {
-      var charPos = Math.floor(Math.random() * characters.length);
-      word += characters.charAt(charPos);
-    }
-
-    var l = 0;
-
-    for (var j = 0; j < 4; j++) {
-      for (var k = 0; k < 4; k++) {
-        wordArray[j][k] = word[l];
-        l++;
-      }
-    }
+    this.load2dArrayWithRandomChars(wordArray, word);
 
     this.setState(state => {
       const charArray = state.charArray.push(wordArray);
@@ -64,6 +49,33 @@ class RandomAlphabet extends Component {
       return charArray;
     });
   }
+
+    load2dArrayWithRandomChars(wordArray, word) {
+        var l = 0;
+        for (var j = 0; j < 4; j++) {
+            for (var k = 0; k < 4; k++) {
+                wordArray[j][k] = word[l];
+                l++;
+            }
+        }
+    }
+
+    generateRandomChars(characters) {
+        var word = "";
+        for (var i = 0; i <= 15; i++) {
+            var charPos = Math.floor(Math.random() * characters.length);
+            word += characters.charAt(charPos);
+        }
+        return word;
+    }
+
+    initialize2dArray() {
+        var wordArray = new Array(4);
+        for (var i = 0; i < 4; i++) {
+            wordArray[i] = new Array(4);
+        }
+        return wordArray;
+    }
 }
 
 export default RandomAlphabet;

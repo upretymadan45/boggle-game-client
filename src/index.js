@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
-import RandomAlphabet from './components/random-alphabet';
+import BoggleGame from './components/boggle-game';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<RandomAlphabet />, document.getElementById('root'));
+ReactDOM.render(<BoggleGame />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

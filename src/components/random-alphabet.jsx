@@ -15,7 +15,7 @@ class RandomAlphabet extends Component {
                     <tr>
                         {y.map((z,j)=>(
                             <td>
-                                <button className="btn btn-primary btn-sm"
+                                <button className="btn btn-primary btn-sm letter-btn"
                                 data-row-id={i}
                                 data-col-id={j}>
                                     {z}

@@ -6,15 +6,15 @@ class RandomAlphabet extends Component {
     charArray: []
   };
   render() {
-    return this.state.charArray.map(x => (
-        <table>
+    return this.state.charArray.map((x,i) => (
+        <table key={i}>
             <thead>
             </thead>
             <tbody>
                 {x.map((y,i)=>(
-                    <tr>
+                    <tr key={i}>
                         {y.map((z,j)=>(
-                            <td>
+                            <td key={j}>
                                 <button className="btn btn-primary btn-sm letter-btn"
                                 data-row-id={i}
                                 data-col-id={j}>

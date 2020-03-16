@@ -10,10 +10,15 @@ class BoggleGame extends Component {
             <div className="col-6 offset-sm-4">
                 <RandomAlphabet/>
 
-                <UserInput/>
+                <UserInput onKeyUp={this.handleUserInputOnKeyUp}/>
             </div>
         </div>
          );
+    }
+
+    handleUserInputOnKeyUp=(event)=>{
+        let inputValue = event.target.value.toUpperCase();
+        console.log(inputValue);
     }
 }
  

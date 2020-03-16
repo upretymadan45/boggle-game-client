@@ -9,7 +9,8 @@ class UserInput extends Component {
                     type="text"
                     id="word-input"
                     className="form-control"
-                    style={{width:210}}/>
+                    style={{width:210}}
+                    onKeyUp={this.props.onKeyUp}/>
             </div>
          );
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RandomAlphabet from './random-alphabet';
 import UserInput from './user-input';
+import Timer from './timer';
 
 class BoggleGame extends Component {
     state = {  }
@@ -11,6 +12,10 @@ class BoggleGame extends Component {
                 <RandomAlphabet/>
 
                 <UserInput onKeyUp={this.handleUserInputOnKeyUp}/>
+
+            </div>
+            <div className="col-2">
+                <Timer />
             </div>
         </div>
          );

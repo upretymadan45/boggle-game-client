@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 class Timer extends Component {
+    _isMounted = false;
+
     state = { 
         second: 59,
         minute: 2
@@ -16,6 +18,30 @@ class Timer extends Component {
                 </span>
             </h3>
          );
+    }
+
+    componentDidMount(){
+        this._isMounted = true;
+        if(this._isMounted) this.increaseSecond();
+    }
+
+    componentDidUpdate(){
+        if(this._isMounted){
+            if(this.state.second===-1 && this.state.minute>0){
+                this.setState({second: 59});
+                this.setState({minute: this.state.minute - 1});
+            }
+        }
+    }
+
+    componentWillMount(){
+        this._isMounted = true;
+    }
+
+    increaseSecond(){
+        setInterval(()=>{
+            this.setState({second: this.state.second - 1});
+        },1000);
     }
 }
  

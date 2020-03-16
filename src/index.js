@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
+
 import RandomAlphabet from './components/random-alphabet';
 import * as serviceWorker from './serviceWorker';
 

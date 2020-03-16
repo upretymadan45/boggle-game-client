@@ -4,7 +4,8 @@ import UserInput from './user-input';
 import Timer from './timer';
 
 class BoggleGame extends Component {
-    state = {  }
+
+    state = { }
     render() { 
         return ( 
         <div className="row" style={{marginTop: 50}}>
@@ -15,7 +16,7 @@ class BoggleGame extends Component {
 
             </div>
             <div className="col-2">
-                <Timer />
+                <Timer onTimeUp={this.timeUp}/>
             </div>
         </div>
          );
@@ -24,6 +25,10 @@ class BoggleGame extends Component {
     handleUserInputOnKeyUp=(event)=>{
         let inputValue = event.target.value.toUpperCase();
         console.log(inputValue);
+    }
+
+    timeUp(){
+        console.log('Time expired');
     }
 }
  

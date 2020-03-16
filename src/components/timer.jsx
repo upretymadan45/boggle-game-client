@@ -31,6 +31,10 @@ class Timer extends Component {
                 this.setState({second: 59});
                 this.setState({minute: this.state.minute - 1});
             }
+
+            if(this.state.second===0 && this.state.minute===1){
+                this.props.onTimeUp();
+            }
         }
     }
 

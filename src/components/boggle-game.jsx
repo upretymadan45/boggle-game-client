@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
+import RandomAlphabet from './random-alphabet';
+import UserInput from './user-input';
 
 class BoggleGame extends Component {
     state = {  }
     render() { 
         return ( 
-            <h2>Boggle game component</h2>
+        <div className="row" style={{marginTop: 50}}>
+            <div className="col-6 offset-sm-4">
+                <RandomAlphabet/>
+
+                <UserInput/>
+            </div>
+        </div>
          );
     }
 }

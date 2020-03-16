@@ -38,8 +38,8 @@ class Timer extends Component {
         }
     }
 
-    componentWillMount(){
-        this._isMounted = true;
+    componentWillUnmount(){
+        this._isMounted = false;
     }
 
     increaseSecond(){

@@ -5,7 +5,14 @@ import Timer from './timer';
 
 class BoggleGame extends Component {
 
-    state = { }
+    constructor(props){
+        super(props);
+        this.timeUp = this.timeUp.bind(this);
+    }
+
+    state = { 
+        gameOver: false
+    }
     render() { 
         return ( 
         <div className="row" style={{marginTop: 50}}>
@@ -28,7 +35,8 @@ class BoggleGame extends Component {
     }
 
     timeUp(){
-        console.log('Time expired');
+        this.setState({gameOver: true});
+        console.log(this.state.gameOver);
     }
 }
  

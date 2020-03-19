@@ -3,7 +3,8 @@ import React, { Component } from "react";
 class RandomAlphabet extends Component {
   state = {
     characters: "EARIONTNSLC",
-    charArray: []
+    charArray: [],
+    visitedNode:[]
   };
 
   render() {
@@ -78,10 +79,20 @@ class RandomAlphabet extends Component {
     return wordArray;
   }
 
-  findCorrectWord(lastLetter,e){
-    console.log("method called");
-  }
+  findCorrectWord(lastLetter, e) {
+    let value = e.target.value.toUpperCase();
 
+    var visitedNodeArray = new Array();
+
+    var targets, rowId, colId;
+
+    targets = [...document.querySelectorAll("button")].filter(x =>
+      x.textContent.includes(lastLetter)
+    );
+    
+    
+    
+  }
 }
 
 export default RandomAlphabet;

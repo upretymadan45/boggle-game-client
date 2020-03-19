@@ -80,6 +80,8 @@ class RandomAlphabet extends Component {
   }
 
   findCorrectWord(lastLetter, e) {
+    const{visitedNode} = this.state;
+
     let value = e.target.value.toUpperCase();
 
     var visitedNodeArray = new Array();
@@ -90,9 +92,15 @@ class RandomAlphabet extends Component {
       x.textContent.includes(lastLetter)
     );
     
-    if(this.state.visitedNode.length===0){
+    if(visitedNode.length===0){
       this.storeFirstTypedCharToArray(targets,visitedNodeArray);
     }
+
+    var lastVisitedNode = 
+        visitedNode.length>0 &&
+        visitedNode[visitedNode.length-1];
+
+    
     
   }
 

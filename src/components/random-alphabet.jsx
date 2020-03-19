@@ -5,6 +5,7 @@ class RandomAlphabet extends Component {
     characters: "EARIONTNSLC",
     charArray: []
   };
+
   render() {
     return this.state.charArray.map((x, i) => (
       <table key={i}>
@@ -76,6 +77,11 @@ class RandomAlphabet extends Component {
     }
     return wordArray;
   }
+
+  findCorrectWord(lastLetter,e){
+    console.log("method called");
+  }
+
 }
 
 export default RandomAlphabet;

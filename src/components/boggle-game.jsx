@@ -18,7 +18,7 @@ class BoggleGame extends Component {
     return (
       <div className="row" style={{ marginTop: 50 }}>
         <div className="col-6 offset-sm-4">
-          <RandomAlphabet />
+          <RandomAlphabet ref="randomAlphabet" />
 
           <UserInput onKeyUp={this.handleUserInputOnKeyUp} />
         </div>
@@ -31,7 +31,10 @@ class BoggleGame extends Component {
 
   handleUserInputOnKeyUp = event => {
     let inputValue = event.target.value.toUpperCase();
-    console.log(inputValue);
+
+    let lastLetter = inputValue[inputValue.length - 1];
+
+    this.refs.randomAlphabet.findCorrectWord(lastLetter, event);
   };
 
   timeUp() {

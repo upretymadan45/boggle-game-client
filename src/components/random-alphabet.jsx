@@ -4,7 +4,8 @@ class RandomAlphabet extends Component {
   state = {
     characters: "EARIONTNSLC",
     charArray: [],
-    visitedNode:[]
+    visitedNode:[],
+    isSuccess: true
   };
 
   render() {
@@ -117,6 +118,46 @@ class RandomAlphabet extends Component {
 
     var tempJoined = this.state.visitedNode.concat(visitedNodeArray);
     this.setState({visitedNode: tempJoined});
+  }
+
+  checkValidityOfNodes(
+    targets,rowId,colId,visitedNodeArray,e,i,lastVisitedNode,alreadyExists
+  ){
+    const{visitedNode} = this.state;
+    var checkRowId, checkColId;
+
+    var existingNodesWithSameLetterAsLastVisitedNode = visitedNode?.filter(
+      node=>
+        node.target ===
+        visitedNode[visitedNode.length-1].target
+    );
+
+    if(existingNodesWithSameLetterAsLastVisitedNode.length>0){
+      for(var j=0; j<existingNodesWithSameLetterAsLastVisitedNode.length; j++){
+        checkRowId = Math.abs(colId - existingNodesWithSameLetterAsLastVisitedNode[j].rowId);
+        checkColId = Math.abs(colId - existingNodesWithSameLetterAsLastVisitedNode[j].colId);
+
+        if((checkRowId===1 || checkRowId===0) && (checkColId===1 || checkColId===0)){
+          break;
+        }
+      }
+    }else{
+      checkRowId = Math.abs(rowId - lastVisitedNode.rowId);
+      checkColId = Math.abs(colId - lastVisitedNode.colId);
+    }
+
+    var isValid = (checkRowId===1 || checkRowId===0 ) && (checkColId ===1 || checkColId===0);
+
+    if(isValid && (e.keyCode !=13 || e.keyCode!=8) && !alreadyExists){
+      visitedNodeArray.push({
+        rowId: rowId,
+        colId: colId,
+        target: targets[i].innerHTML
+      });
+      this.setState({isSuccess: true});
+    }else{
+      this.setState({isSuccess: false});
+    }
   }
 }
 

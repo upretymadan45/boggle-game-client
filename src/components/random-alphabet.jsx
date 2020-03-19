@@ -90,8 +90,25 @@ class RandomAlphabet extends Component {
       x.textContent.includes(lastLetter)
     );
     
+    if(this.state.visitedNode.length===0){
+      this.storeFirstTypedCharToArray(targets,visitedNodeArray);
+    }
     
-    
+  }
+
+  storeFirstTypedCharToArray(targets,visitedNodeArray){
+    for(var i=0; i<targets.length; i++){
+      var rowId = targets[i].getAttribute("data-row-id");
+      var colId = targets[i].getAttribute("data-col-id");
+      visitedNodeArray.push({
+        rowId: rowId,
+        colId: colId,
+        target: targets[i].innerHTML
+      });
+    }
+
+    var tempJoined = this.state.visitedNode.concat(visitedNodeArray);
+    this.setState({visitedNode: tempJoined});
   }
 }
 

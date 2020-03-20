@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 class RandomAlphabet extends Component {
   state = {
-    characters: "EARIONTNSLC",
+    characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     charArray: [],
-    visitedNode:[],
+    visitedNode: [],
     isSuccess: true
   };
 
@@ -81,7 +81,7 @@ class RandomAlphabet extends Component {
   }
 
   findCorrectWord(lastLetter, e) {
-    const{visitedNode} = this.state;
+    const { visitedNode } = this.state;
 
     let value = e.target.value.toUpperCase();
 
@@ -92,21 +92,41 @@ class RandomAlphabet extends Component {
     targets = [...document.querySelectorAll("button")].filter(x =>
       x.textContent.includes(lastLetter)
     );
-    
-    if(visitedNode.length===0){
-      this.storeFirstTypedCharToArray(targets,visitedNodeArray);
+
+    if (visitedNode.length === 0) {
+      this.storeFirstTypedCharToArray(targets, visitedNodeArray);
     }
 
-    var lastVisitedNode = 
-        visitedNode.length>0 &&
-        visitedNode[visitedNode.length-1];
+    var lastVisitedNode =
+      visitedNode.length > 0 && visitedNode[visitedNode.length - 1];
 
-    
-    
+    for (var i = 0; i < targets.length; i++) {
+      rowId = targets[i].getAttribute("data-row-id");
+      colId = targets[i].getAttribute("data-col-id");
+
+      var alreadyExists =
+        visitedNode.filter(node => node.rowId === rowId && node.colId === colId)
+          .length > 0;
+
+      this.checkValidityOfNodes(
+        targets,
+        rowId,
+        colId,
+        visitedNodeArray,
+        e,
+        i,
+        lastVisitedNode,
+        alreadyExists,
+        lastLetter
+      );
+
+      var joined = visitedNode.concat(visitedNodeArray);
+      this.setState({visitedNode: joined});
+    }
   }
 
-  storeFirstTypedCharToArray(targets,visitedNodeArray){
-    for(var i=0; i<targets.length; i++){
+  storeFirstTypedCharToArray(targets, visitedNodeArray) {
+    for (var i = 0; i < targets.length; i++) {
       var rowId = targets[i].getAttribute("data-row-id");
       var colId = targets[i].getAttribute("data-col-id");
       visitedNodeArray.push({
@@ -117,46 +137,55 @@ class RandomAlphabet extends Component {
     }
 
     var tempJoined = this.state.visitedNode.concat(visitedNodeArray);
-    this.setState({visitedNode: tempJoined});
+    this.setState({ visitedNode: tempJoined });
   }
 
   checkValidityOfNodes(
-    targets,rowId,colId,visitedNodeArray,e,i,lastVisitedNode,alreadyExists
-  ){
-    const{visitedNode} = this.state;
+    targets,
+    rowId,
+    colId,
+    visitedNodeArray,
+    e,
+    i,
+    lastVisitedNode,
+    alreadyExists
+  ) {
+    const { visitedNode } = this.state;
     var checkRowId, checkColId;
 
     var existingNodesWithSameLetterAsLastVisitedNode = visitedNode?.filter(
-      node=>
-        node.target ===
-        visitedNode[visitedNode.length-1].target
+      node => node.target === visitedNode[visitedNode.length - 1].target
     );
 
-    if(existingNodesWithSameLetterAsLastVisitedNode.length>0){
-      for(var j=0; j<existingNodesWithSameLetterAsLastVisitedNode.length; j++){
-        checkRowId = Math.abs(colId - existingNodesWithSameLetterAsLastVisitedNode[j].rowId);
+    if (existingNodesWithSameLetterAsLastVisitedNode.length > 0) {
+      for (var j = 0; j < existingNodesWithSameLetterAsLastVisitedNode.length; j++) {
+        
+        checkRowId = Math.abs(rowId - existingNodesWithSameLetterAsLastVisitedNode[j].rowId);
+        
         checkColId = Math.abs(colId - existingNodesWithSameLetterAsLastVisitedNode[j].colId);
 
-        if((checkRowId===1 || checkRowId===0) && (checkColId===1 || checkColId===0)){
+        if ((checkRowId === 1 || checkRowId === 0) && (checkColId === 1 || checkColId === 0)) {
           break;
         }
       }
-    }else{
+    } else {
       checkRowId = Math.abs(rowId - lastVisitedNode.rowId);
       checkColId = Math.abs(colId - lastVisitedNode.colId);
     }
 
-    var isValid = (checkRowId===1 || checkRowId===0 ) && (checkColId ===1 || checkColId===0);
+    var isValid =
+      (checkRowId === 1 || checkRowId === 0) &&
+      (checkColId === 1 || checkColId === 0);
 
-    if(isValid && (e.keyCode !=13 || e.keyCode!=8) && !alreadyExists){
+    if (isValid && (e.keyCode != 13 || e.keyCode != 8) && !alreadyExists) {
       visitedNodeArray.push({
         rowId: rowId,
         colId: colId,
         target: targets[i].innerHTML
       });
-      this.setState({isSuccess: true});
-    }else{
-      this.setState({isSuccess: false});
+      this.setState({ isSuccess: true });
+    } else {
+      this.setState({ isSuccess: false });
     }
   }
 }

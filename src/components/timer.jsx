@@ -33,6 +33,7 @@ class Timer extends Component {
             }
 
             if(this.state.second===0 && this.state.minute===1){
+                this._isMounted = false;
                 this.props.onTimeUp();
             }
         }

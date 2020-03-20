@@ -28,7 +28,7 @@ class BoggleGame extends Component {
 
           <UserInput onKeyUp={this.handleUserInputOnKeyUp} />
 
-          <WordList wordList={this.state.validWord}/>
+          <WordList wordList={this.state.validWords}/>
         </div>
         <div className="col-2">
           <Timer onTimeUp={this.timeUp} />

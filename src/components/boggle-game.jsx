@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import RandomAlphabet from "./random-alphabet";
 import UserInput from "./user-input";
 import Timer from "./timer";
+import WordList from './word-list';
 
 class BoggleGame extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class BoggleGame extends Component {
     validWords:[],
     totalScore: 0
   };
+
   render() {
     return (
       <div className="row" style={{ marginTop: 50 }}>
@@ -25,6 +27,8 @@ class BoggleGame extends Component {
           onSendValidWord={this.getValidWord}/>
 
           <UserInput onKeyUp={this.handleUserInputOnKeyUp} />
+
+          <WordList wordList={this.state.validWord}/>
         </div>
         <div className="col-2">
           <Timer onTimeUp={this.timeUp} />

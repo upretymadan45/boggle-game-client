@@ -125,6 +125,9 @@ class RandomAlphabet extends Component {
     }
 
     this.deleteOnBackspace(e);
+
+    this.verifyWord(e,value);
+
   }
 
   storeFirstTypedCharToArray(targets, visitedNodeArray) {
@@ -196,6 +199,19 @@ class RandomAlphabet extends Component {
       this.setState({visitedNode:[]});
       e.target.value="";
       this.setState({isSuccess:true});
+    }
+  }
+
+  verifyWord(e,value){
+    if(e.keyCode==13){
+      if(this.state.isSuccess){
+        console.log("call web api to verify word");
+      }else{
+        alert("Invalid word combination");
+      }
+      e.target.value="";
+      this.setState({isSuccess: true});
+      this.setState({visitedNode:[]});
     }
   }
 }

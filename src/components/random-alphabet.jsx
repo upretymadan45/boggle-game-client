@@ -206,6 +206,7 @@ class RandomAlphabet extends Component {
     if(e.keyCode==13){
       if(this.state.isSuccess){
         console.log("call web api to verify word");
+        this.props.onSendValidWord(value);
       }else{
         alert("Invalid word combination");
       }

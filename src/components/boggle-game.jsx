@@ -12,7 +12,9 @@ class BoggleGame extends Component {
   }
 
   state = {
-    gameOver: false
+    gameOver: false,
+    validWords:[],
+    totalScore: 0
   };
   render() {
     return (
@@ -45,7 +47,20 @@ class BoggleGame extends Component {
   }
 
   getValidWord = word =>{
-    
+    const{validWords} = this.state;
+
+    if(word.length>0 && !validWords.includes(word.toUpperCase())){
+      this.setState(state=>{
+        const validWord = state.validWords.push(word.toUpperCase());
+        return validWord;
+      });
+
+      let totalScore = this.state.totalScore + word.length;
+      this.setState({totalScore: totalScore});
+    }else{
+      let message = validWords.includes(word.toUpperCase())? "Word already guessed!" : "Empty Word!";
+      alert(message);
+    }
   }
 }
 

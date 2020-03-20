@@ -123,6 +123,8 @@ class RandomAlphabet extends Component {
       var joined = visitedNode.concat(visitedNodeArray);
       this.setState({visitedNode: joined});
     }
+
+    this.deleteOnBackspace(e);
   }
 
   storeFirstTypedCharToArray(targets, visitedNodeArray) {
@@ -186,6 +188,14 @@ class RandomAlphabet extends Component {
       this.setState({ isSuccess: true });
     } else {
       this.setState({ isSuccess: false });
+    }
+  }
+
+  deleteOnBackspace(e){
+    if(e.keyCode==8){
+      this.setState({visitedNode:[]});
+      e.target.value="";
+      this.setState({isSuccess:true});
     }
   }
 }

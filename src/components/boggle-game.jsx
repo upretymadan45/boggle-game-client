@@ -18,7 +18,9 @@ class BoggleGame extends Component {
     return (
       <div className="row" style={{ marginTop: 50 }}>
         <div className="col-6 offset-sm-4">
-          <RandomAlphabet ref="randomAlphabet" />
+          <RandomAlphabet 
+          ref="randomAlphabet" 
+          onSendValidWord={this.getValidWord}/>
 
           <UserInput onKeyUp={this.handleUserInputOnKeyUp} />
         </div>
@@ -40,6 +42,10 @@ class BoggleGame extends Component {
   timeUp() {
     this.setState({ gameOver: true });
     this.props.history.push("/score");
+  }
+
+  getValidWord = word =>{
+    
   }
 }
 

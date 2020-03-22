@@ -11,6 +11,7 @@ class UserInput extends Component {
                     className="form-control"
                     style={{width:210}}
                     onInput={this.props.onInput}
+                    onKeyUp={this.props.onKeyUp}
                     />
             </div>
          );

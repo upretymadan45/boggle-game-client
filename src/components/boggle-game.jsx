@@ -26,7 +26,7 @@ class BoggleGame extends Component {
           ref="randomAlphabet" 
           onSendValidWord={this.getValidWord}/>
 
-          <UserInput onInput={this.handleUserInputonInput} />
+          <UserInput onInput={this.handleUserInputonInput} onKeyUp={this.handleDelete} />
 
           <WordList wordList={this.state.validWords}/>
         </div>
@@ -44,6 +44,11 @@ class BoggleGame extends Component {
 
     this.refs.randomAlphabet.findCorrectWord(lastLetter, event);
   };
+
+  handleDelete = event =>{
+    if(event.keyCode===8)
+      this.refs.randomAlphabet.deleteOnBackspace(event);
+  }
 
   timeUp() {
     this.setState({ gameOver: true });

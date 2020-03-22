@@ -26,7 +26,7 @@ class BoggleGame extends Component {
           ref="randomAlphabet" 
           onSendValidWord={this.getValidWord}/>
 
-          <UserInput onKeyUp={this.handleUserInputOnKeyUp} />
+          <UserInput onInput={this.handleUserInputonInput} />
 
           <WordList wordList={this.state.validWords}/>
         </div>
@@ -37,7 +37,7 @@ class BoggleGame extends Component {
     );
   }
 
-  handleUserInputOnKeyUp = event => {
+  handleUserInputonInput = event => {
     let inputValue = event.target.value.toUpperCase();
 
     let lastLetter = inputValue[inputValue.length - 1];

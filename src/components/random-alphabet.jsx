@@ -205,8 +205,15 @@ class RandomAlphabet extends Component {
   verifyWord(e,value){
     if(e.keyCode==13){
       if(this.state.isSuccess){
-        console.log("call web api to verify word");
-        this.props.onSendValidWord(value);
+        fetch("http://localhost:3000/validate_word?word="+value)
+          .then(res=>res.json())
+            .then(data=>{
+              if(data){
+                this.props.onSendValidWord(value);
+              }else{
+                alert("Word not found in dictionary");
+              }
+            })
       }else{
         alert("Invalid word combination");
       }

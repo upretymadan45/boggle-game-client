@@ -80,10 +80,8 @@ class RandomAlphabet extends Component {
     return wordArray;
   }
 
-  findCorrectWord(lastLetter, e) {
+  findCorrectWord(lastLetter) {
     const { visitedNode } = this.state;
-
-    let value = e.target.value.toUpperCase();
 
     var visitedNodeArray = new Array();
 
@@ -113,7 +111,6 @@ class RandomAlphabet extends Component {
         rowId,
         colId,
         visitedNodeArray,
-        e,
         i,
         lastVisitedNode,
         alreadyExists,
@@ -145,7 +142,6 @@ class RandomAlphabet extends Component {
     rowId,
     colId,
     visitedNodeArray,
-    e,
     i,
     lastVisitedNode,
     alreadyExists
@@ -177,7 +173,7 @@ class RandomAlphabet extends Component {
       (checkRowId === 1 || checkRowId === 0) &&
       (checkColId === 1 || checkColId === 0);
 
-    if (isValid && (e.keyCode != 13 || e.keyCode != 8) && !alreadyExists) {
+    if (isValid && !alreadyExists) {
       visitedNodeArray.push({
         rowId: rowId,
         colId: colId,

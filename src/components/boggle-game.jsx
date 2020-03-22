@@ -42,7 +42,7 @@ class BoggleGame extends Component {
 
     let lastLetter = inputValue[inputValue.length - 1];
 
-    this.refs.randomAlphabet.findCorrectWord(lastLetter, event);
+    this.refs.randomAlphabet.findCorrectWord(lastLetter);
   };
 
   handleEnterAndDelete = event =>{

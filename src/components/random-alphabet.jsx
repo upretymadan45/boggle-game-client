@@ -123,11 +123,6 @@ class RandomAlphabet extends Component {
       var joined = visitedNode.concat(visitedNodeArray);
       this.setState({visitedNode: joined});
     }
-
-    this.deleteOnBackspace(e);
-
-    this.verifyWord(e,value);
-
   }
 
   storeFirstTypedCharToArray(targets, visitedNodeArray) {

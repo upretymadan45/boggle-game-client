@@ -7,7 +7,9 @@ class RandomAlphabet extends Component {
     visitedNode: [],
     isSuccess: true,
     lastUsedNodeRowId: -1,
-    lastUsedNodeColId: -1
+    lastUsedNodeColId: -1,
+    value:"",
+    alreadyExists: false
   };
 
   render() {
@@ -112,6 +114,8 @@ class RandomAlphabet extends Component {
       visitedNode.filter(node => node.rowId === rowId && node.colId === colId)
         .length > 0;
 
+    this.setState(()=>({alreadyExists: alreadyExists}))
+
     this.checkValidityOfNodes(
       targets[i],
       rowId,
@@ -123,6 +127,7 @@ class RandomAlphabet extends Component {
 
     var joined = visitedNode.concat(visitedNodeArray);
     this.setState(() => ({ visitedNode: joined }));
+    this.setState(()=>({value: inputValue}));
     }
   }
 

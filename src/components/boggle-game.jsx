@@ -15,7 +15,8 @@ class BoggleGame extends Component {
   state = {
     gameOver: false,
     validWords:[],
-    totalScore: 0
+    totalScore: 0,
+    isError: false
   };
 
   render() {
@@ -24,9 +25,13 @@ class BoggleGame extends Component {
         <div className="col-6 offset-sm-4">
           <RandomAlphabet 
           ref="randomAlphabet" 
-          onSendValidWord={this.getValidWord}/>
+          onSendValidWord={this.getValidWord}
+          onError={this.handleError}/>
 
-          <UserInput onInput={this.handleUserInputonInput} onKeyUp={this.handleEnterAndDelete} />
+          <UserInput
+          ref="userInput" 
+          onInput={this.handleUserInputonInput} 
+          onKeyUp={this.handleEnterAndDelete} />
 
           <WordList wordList={this.state.validWords}/>
         </div>
@@ -55,11 +60,11 @@ class BoggleGame extends Component {
   }
 
   timeUp() {
-    this.setState({ gameOver: true });
-    this.props.history.push("/score",{
-      score: this.state.totalScore,
-      words: this.state.validWords
-    });
+    // this.setState({ gameOver: true });
+    // this.props.history.push("/score",{
+    //   score: this.state.totalScore,
+    //   words: this.state.validWords
+    // });
   }
 
   getValidWord = word =>{
@@ -77,6 +82,12 @@ class BoggleGame extends Component {
       let message = validWords.includes(word.toUpperCase())? "Word already guessed!" : "Empty Word!";
       alert(message);
     }
+  }
+
+  handleError = (isError,visitedNode) =>{
+    this.setState(()=>({isError: isError}));
+    if(isError)
+      this.refs.userInput.handleError(visitedNode);
   }
 }
 

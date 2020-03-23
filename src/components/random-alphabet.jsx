@@ -5,7 +5,9 @@ class RandomAlphabet extends Component {
     characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     charArray: [],
     visitedNode: [],
-    isSuccess: true
+    isSuccess: true,
+    lastUsedNodeRowId: -1,
+    lastUsedNodeColId: -1
   };
 
   render() {
@@ -87,38 +89,40 @@ class RandomAlphabet extends Component {
 
     var targets, rowId, colId;
 
-    targets = [...document.querySelectorAll("button")].filter(x =>
-      x.textContent.includes(lastLetter)
+    targets = [...document.querySelectorAll("button")].filter(
+      x =>
+        x.textContent.includes(lastLetter) &&
+        (x.getAttribute("data-row-id") != this.state.lastUsedNodeRowId ||
+          x.getAttribute("data-col-id") != this.state.lastUsedNodeColId)
     );
 
     if (visitedNode.length === 0) {
       this.storeFirstTypedCharToArray(targets, visitedNodeArray);
+      return;
     }
 
     var lastVisitedNode =
       visitedNode.length > 0 && visitedNode[visitedNode.length - 1];
-
+    
     for (var i = 0; i < targets.length; i++) {
-      rowId = targets[i].getAttribute("data-row-id");
-      colId = targets[i].getAttribute("data-col-id");
+    var rowId = targets[i].getAttribute("data-row-id");
+    var colId = targets[i].getAttribute("data-col-id");
 
-      var alreadyExists =
-        visitedNode.filter(node => node.rowId === rowId && node.colId === colId)
-          .length > 0;
+    var alreadyExists =
+      visitedNode.filter(node => node.rowId === rowId && node.colId === colId)
+        .length > 0;
 
-      this.checkValidityOfNodes(
-        targets,
-        rowId,
-        colId,
-        visitedNodeArray,
-        i,
-        lastVisitedNode,
-        alreadyExists,
-        lastLetter
-      );
+    this.checkValidityOfNodes(
+      targets[i],
+      rowId,
+      colId,
+      visitedNodeArray,
+      lastVisitedNode,
+      alreadyExists
+    );
 
-      var joined = visitedNode.concat(visitedNodeArray);
-      this.setState({visitedNode: joined});
+    var joined = visitedNode.concat(visitedNodeArray);
+    this.setState(() => ({ visitedNode: joined }));
     }
   }
 
@@ -126,6 +130,10 @@ class RandomAlphabet extends Component {
     for (var i = 0; i < targets.length; i++) {
       var rowId = targets[i].getAttribute("data-row-id");
       var colId = targets[i].getAttribute("data-col-id");
+
+      this.setState(() => ({ lastUsedNodeRowId: rowId }));
+      this.setState(() => ({ lastUsedNodeColId: colId }));
+
       visitedNodeArray.push({
         rowId: rowId,
         colId: colId,
@@ -134,7 +142,7 @@ class RandomAlphabet extends Component {
     }
 
     var tempJoined = this.state.visitedNode.concat(visitedNodeArray);
-    this.setState({ visitedNode: tempJoined });
+    this.setState(() => ({ visitedNode: tempJoined }));
   }
 
   checkValidityOfNodes(
@@ -142,7 +150,6 @@ class RandomAlphabet extends Component {
     rowId,
     colId,
     visitedNodeArray,
-    i,
     lastVisitedNode,
     alreadyExists
   ) {
@@ -154,13 +161,23 @@ class RandomAlphabet extends Component {
     );
 
     if (existingNodesWithSameLetterAsLastVisitedNode.length > 0) {
-      for (var j = 0; j < existingNodesWithSameLetterAsLastVisitedNode.length; j++) {
-        
-        checkRowId = Math.abs(rowId - existingNodesWithSameLetterAsLastVisitedNode[j].rowId);
-        
-        checkColId = Math.abs(colId - existingNodesWithSameLetterAsLastVisitedNode[j].colId);
+      for (
+        var j = 0;
+        j < existingNodesWithSameLetterAsLastVisitedNode.length;
+        j++
+      ) {
+        checkRowId = Math.abs(
+          rowId - existingNodesWithSameLetterAsLastVisitedNode[j].rowId
+        );
 
-        if ((checkRowId === 1 || checkRowId === 0) && (checkColId === 1 || checkColId === 0)) {
+        checkColId = Math.abs(
+          colId - existingNodesWithSameLetterAsLastVisitedNode[j].colId
+        );
+
+        if (
+          (checkRowId === 1 || checkRowId === 0) &&
+          (checkColId === 1 || checkColId === 0)
+        ) {
           break;
         }
       }
@@ -177,40 +194,47 @@ class RandomAlphabet extends Component {
       visitedNodeArray.push({
         rowId: rowId,
         colId: colId,
-        target: targets[i].innerHTML
+        target: targets.innerHTML
       });
-      this.setState({ isSuccess: true });
+      this.setState(() => ({ isSuccess: true }));
+      this.setState(() => ({ lastUsedNodeRowId: rowId }));
+      this.setState(() => ({ lastUsedNodeColId: colId }));
+      this.props.onError(false, this.state.visitedNode);
     } else {
-      this.setState({ isSuccess: false });
+      this.setState(() => ({ isSuccess: false }));
+      this.props.onError(true, this.state.visitedNode);
     }
   }
 
-  deleteOnBackspace(e){
-    if(e.keyCode==8){
-      this.setState({visitedNode:[]});
-      e.target.value="";
-      this.setState({isSuccess:true});
+  deleteOnBackspace(e) {
+    if (e.keyCode == 8) {
+      this.setState(() => ({ visitedNode: [] }));
+      e.target.value = "";
+      this.setState(() => ({ isSuccess: true }));
+
+      this.setState(()=>({lastUsedNodeColId:-1}));
+      this.setState(()=>({lastUsedNodeRowId: -1}))
     }
   }
 
-  verifyWord(e,value){
-    if(e.keyCode==13){
-      if(this.state.isSuccess){
-        fetch("http://localhost:3000/validate_word?word="+value)
-          .then(res=>res.json())
-            .then(data=>{
-              if(data){
-                this.props.onSendValidWord(value);
-              }else{
-                alert("Word not found in dictionary");
-              }
-            })
-      }else{
+  verifyWord(e, value) {
+    if (e.keyCode == 13) {
+      if (this.state.isSuccess) {
+        fetch("http://localhost:3000/validate_word?word=" + value)
+          .then(res => res.json())
+          .then(data => {
+            if (data) {
+              this.props.onSendValidWord(value);
+            } else {
+              alert("Word not found in dictionary");
+            }
+          });
+      } else {
         alert("Invalid word combination");
       }
-      e.target.value="";
-      this.setState({isSuccess: true});
-      this.setState({visitedNode:[]});
+      e.target.value = "";
+      this.setState(() => ({ isSuccess: true }));
+      this.setState(() => ({ visitedNode: [] }));
     }
   }
 }

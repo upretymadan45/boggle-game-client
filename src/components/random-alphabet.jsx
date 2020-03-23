@@ -82,7 +82,7 @@ class RandomAlphabet extends Component {
     return wordArray;
   }
 
-  findCorrectWord(lastLetter) {
+  findCorrectWord(lastLetter,inputValue) {
     const { visitedNode } = this.state;
 
     var visitedNodeArray = new Array();

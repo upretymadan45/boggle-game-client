@@ -19,15 +19,8 @@ class UserInput extends Component {
 
   handleError = visitedNode => {
     var input = document.getElementById("word-input");
-    var currentValue = input.value;
-    var newValue = "";
-
-    if (visitedNode.length > currentValue.length){
-      for (var i = 0; i < currentValue.length - 1; i++) {
-        newValue += currentValue[i];
-      }
-      input.value = newValue;
-    }
+    // input.value='';
+    // alert("Invalid combination");
   }
 }
 

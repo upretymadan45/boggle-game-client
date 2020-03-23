@@ -87,6 +87,8 @@ class RandomAlphabet extends Component {
   findCorrectWord(lastLetter, inputValue) {
     const { visitedNode } = this.state;
 
+    this.setState(()=>({validNodeCount:0}));
+
     var visitedNodeArray = new Array();
 
     var targets, rowId, colId;
@@ -106,6 +108,7 @@ class RandomAlphabet extends Component {
     var lastVisitedNode =
       visitedNode.length > 0 && visitedNode[visitedNode.length - 1];
 
+    var successfulNodeCount=[];
     for (var i = 0; i < targets.length; i++) {
       var rowId = targets[i].getAttribute("data-row-id");
       var colId = targets[i].getAttribute("data-col-id");
@@ -122,7 +125,8 @@ class RandomAlphabet extends Component {
         colId,
         visitedNodeArray,
         lastVisitedNode,
-        alreadyExists
+        alreadyExists,
+        successfulNodeCount
       );
 
       var joined = visitedNode.concat(visitedNodeArray);
@@ -156,16 +160,17 @@ class RandomAlphabet extends Component {
     colId,
     visitedNodeArray,
     lastVisitedNode,
-    alreadyExists
+    alreadyExists,
+    successfulNodeCount
   ) {
-    const { visitedNode } = this.state;
+    const { visitedNode} = this.state;
     var checkRowId, checkColId;
 
     var existingNodesWithSameLetterAsLastVisitedNode = visitedNode?.filter(
       node => node.target === visitedNode[visitedNode.length - 1].target
     );
 
-    if (existingNodesWithSameLetterAsLastVisitedNode.length > 0) {
+    if (existingNodesWithSameLetterAsLastVisitedNode.length > 1) {
       for (
         var j = 0;
         j < existingNodesWithSameLetterAsLastVisitedNode.length;
@@ -204,8 +209,25 @@ class RandomAlphabet extends Component {
       this.setState(() => ({ isSuccess: true }));
       this.setState(() => ({ lastUsedNodeRowId: rowId }));
       this.setState(() => ({ lastUsedNodeColId: colId }));
+
+      successfulNodeCount.push(1);
+
       this.props.onError(false, this.state.visitedNode);
-    } else {
+      
+      return;
+    } else if(isValid && alreadyExists ){
+      var repeatedLetterCountInInput = this.countCharFromString(targets.innerHTML,this.state.value);
+      var repeatedLetterCountInVisitedNodeArray = this.state.visitedNode.filter(x=>x.target===targets.innerHTML).length;
+
+      if(repeatedLetterCountInInput<repeatedLetterCountInVisitedNodeArray){
+
+      this.setState(()=>({isSuccess: true}));
+      successfulNodeCount.push(1);
+      }else{
+        this.setState(()=>({isSuccess:false}));
+      }
+    }
+    else if(successfulNodeCount.length===0){
       this.setState(() => ({ isSuccess: false }));
       this.props.onError(true, this.state.visitedNode);
     }
@@ -240,51 +262,6 @@ class RandomAlphabet extends Component {
       e.target.value = "";
       this.setState(() => ({ isSuccess: true }));
       this.setState(() => ({ visitedNode: [] }));
-    }
-  }
-
-  componentDidUpdate() {
-    const { isSuccess, value, visitedNode, alreadyExists } = this.state;
-    if (!isSuccess && alreadyExists) {
-      var lastVisitedChar = value[value.length - 1];
-
-      var countOfLastVisitedChar = visitedNode.filter(
-        x => x.target === lastVisitedChar
-      ).length;
-
-      var occuranceOfLetterInInput = this.countCharFromString(
-        lastVisitedChar,
-        value
-      );
-
-      if(occuranceOfLetterInInput<=countOfLastVisitedChar){
-        var lastVisitedNode = visitedNode[visitedNode.length-1];
-
-        var targets = [...document.querySelectorAll("button")].filter(x=>
-          x.textContent.includes(lastVisitedChar));
-
-        var isValid = false;
-
-        for(var i=0; i<targets.length; i++){
-          var rowId = targets[i].getAttribute("data-row-id");
-          var colId = targets[i].getAttribute("data-col-id");
-
-          var checkRowId = Math.abs(rowId - lastVisitedNode.rowId);
-          var checkColId = Math.abs(colId - lastVisitedNode.colId);
-
-          isValid = (checkRowId ===1 || checkRowId ===0)&&
-                  (checkColId===1 || checkColId===0);
-
-          if(isValid)
-            break;
-        }
-
-        if(isValid){
-          this.setState(()=>({isSuccess:true}));
-        }else{
-          this.setState(()=>({isSuccess: false}));
-        }
-      }
     }
   }
 

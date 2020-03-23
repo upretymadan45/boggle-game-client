@@ -8,7 +8,7 @@ class RandomAlphabet extends Component {
     isSuccess: true,
     lastUsedNodeRowId: -1,
     lastUsedNodeColId: -1,
-    value:"",
+    value: "",
     alreadyExists: false
   };
 
@@ -84,7 +84,7 @@ class RandomAlphabet extends Component {
     return wordArray;
   }
 
-  findCorrectWord(lastLetter,inputValue) {
+  findCorrectWord(lastLetter, inputValue) {
     const { visitedNode } = this.state;
 
     var visitedNodeArray = new Array();
@@ -105,29 +105,29 @@ class RandomAlphabet extends Component {
 
     var lastVisitedNode =
       visitedNode.length > 0 && visitedNode[visitedNode.length - 1];
-    
+
     for (var i = 0; i < targets.length; i++) {
-    var rowId = targets[i].getAttribute("data-row-id");
-    var colId = targets[i].getAttribute("data-col-id");
+      var rowId = targets[i].getAttribute("data-row-id");
+      var colId = targets[i].getAttribute("data-col-id");
 
-    var alreadyExists =
-      visitedNode.filter(node => node.rowId === rowId && node.colId === colId)
-        .length > 0;
+      var alreadyExists =
+        visitedNode.filter(node => node.rowId === rowId && node.colId === colId)
+          .length > 0;
 
-    this.setState(()=>({alreadyExists: alreadyExists}))
+      this.setState(() => ({ alreadyExists: alreadyExists }));
 
-    this.checkValidityOfNodes(
-      targets[i],
-      rowId,
-      colId,
-      visitedNodeArray,
-      lastVisitedNode,
-      alreadyExists
-    );
+      this.checkValidityOfNodes(
+        targets[i],
+        rowId,
+        colId,
+        visitedNodeArray,
+        lastVisitedNode,
+        alreadyExists
+      );
 
-    var joined = visitedNode.concat(visitedNodeArray);
-    this.setState(() => ({ visitedNode: joined }));
-    this.setState(()=>({value: inputValue}));
+      var joined = visitedNode.concat(visitedNodeArray);
+      this.setState(() => ({ visitedNode: joined }));
+      this.setState(() => ({ value: inputValue }));
     }
   }
 
@@ -217,8 +217,8 @@ class RandomAlphabet extends Component {
       e.target.value = "";
       this.setState(() => ({ isSuccess: true }));
 
-      this.setState(()=>({lastUsedNodeColId:-1}));
-      this.setState(()=>({lastUsedNodeRowId: -1}))
+      this.setState(() => ({ lastUsedNodeColId: -1 }));
+      this.setState(() => ({ lastUsedNodeRowId: -1 }));
     }
   }
 
@@ -241,6 +241,59 @@ class RandomAlphabet extends Component {
       this.setState(() => ({ isSuccess: true }));
       this.setState(() => ({ visitedNode: [] }));
     }
+  }
+
+  componentDidUpdate() {
+    const { isSuccess, value, visitedNode, alreadyExists } = this.state;
+    if (!isSuccess && alreadyExists) {
+      var lastVisitedChar = value[value.length - 1];
+
+      var countOfLastVisitedChar = visitedNode.filter(
+        x => x.target === lastVisitedChar
+      ).length;
+
+      var occuranceOfLetterInInput = this.countCharFromString(
+        lastVisitedChar,
+        value
+      );
+
+      if(occuranceOfLetterInInput<=countOfLastVisitedChar){
+        var lastVisitedNode = visitedNode[visitedNode.length-1];
+
+        var targets = [...document.querySelectorAll("button")].filter(x=>
+          x.textContent.includes(lastVisitedChar));
+
+        var isValid = false;
+
+        for(var i=0; i<targets.length; i++){
+          var rowId = targets[i].getAttribute("data-row-id");
+          var colId = targets[i].getAttribute("data-col-id");
+
+          var checkRowId = Math.abs(rowId - lastVisitedNode.rowId);
+          var checkColId = Math.abs(colId - lastVisitedNode.colId);
+
+          isValid = (checkRowId ===1 || checkRowId ===0)&&
+                  (checkColId===1 || checkColId===0);
+
+          if(isValid)
+            break;
+        }
+
+        if(isValid){
+          this.setState(()=>({isSuccess:true}));
+        }else{
+          this.setState(()=>({isSuccess: false}));
+        }
+      }
+    }
+  }
+
+  countCharFromString(character, strInput) {
+    var count = 0;
+    for (var i = 0; i < strInput.length; i++) {
+      if (strInput[i].toUpperCase() === character.toUpperCase()) count++;
+    }
+    return count;
   }
 }
 

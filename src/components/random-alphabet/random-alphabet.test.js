@@ -12,5 +12,17 @@ describe('RandomAlphabetComponent',()=>{
         const button = wrapper.find('button');
         
         expect(button.length).toBe(16);
+    });
+
+    it('rendered button should only have alphabets',()=>{
+        const wrapper = mount(<RandomAlphabet />);
+
+        const button = wrapper.find('button');
+
+        button.forEach((btn)=>{
+            const text = btn.text();
+
+            expect(typeof(text)).not.toBe(expect.any(Number))
+        })
     })
 })

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 import * as serviceWorker from './serviceWorker';
-import MainPage from './components/main-page';
+import MainPage from './components/main-page/main-page';
 
 ReactDOM.render(<MainPage />, document.getElementById('root'));
 

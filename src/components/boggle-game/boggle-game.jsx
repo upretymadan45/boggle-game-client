@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 
-import RandomAlphabet from "./random-alphabet";
-import UserInput from "./user-input";
-import Timer from "./timer";
-import WordList from './word-list';
+import RandomAlphabet from "../random-alphabet/random-alphabet";
+import UserInput from "../user-input/user-input";
+import Timer from "../timer/timer";
+import WordList from '../word-list/word-list';
 
 class BoggleGame extends Component {
   constructor(props) {
@@ -60,11 +60,11 @@ class BoggleGame extends Component {
   }
 
   timeUp() {
-    // this.setState({ gameOver: true });
-    // this.props.history.push("/score",{
-    //   score: this.state.totalScore,
-    //   words: this.state.validWords
-    // });
+    this.setState({ gameOver: true });
+    this.props.history.push("/score",{
+      score: this.state.totalScore,
+      words: this.state.validWords
+    });
   }
 
   getValidWord = word =>{

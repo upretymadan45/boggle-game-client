@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
-import WordList from './word-list';
+import WordList from '../word-list/word-list';
 
 class Score extends Component {
     constructor(props){

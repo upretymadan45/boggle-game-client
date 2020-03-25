@@ -60,11 +60,11 @@ class BoggleGame extends Component {
   }
 
   timeUp() {
-    this.setState({ gameOver: true });
-    this.props.history.push("/score",{
-      score: this.state.totalScore,
-      words: this.state.validWords
-    });
+    // this.setState({ gameOver: true });
+    // this.props.history.push("/score",{
+    //   score: this.state.totalScore,
+    //   words: this.state.validWords
+    // });
   }
 
   getValidWord = word =>{

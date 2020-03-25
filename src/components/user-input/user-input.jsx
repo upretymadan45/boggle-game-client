@@ -19,8 +19,8 @@ class UserInput extends Component {
 
   handleError = visitedNode => {
     var input = document.getElementById("word-input");
-    // input.value='';
-    // alert("Invalid combination");
+    var lastText = input.value[input.value.length-1];
+    console.log(lastText)
   }
 }
 

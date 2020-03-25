@@ -9,7 +9,8 @@ class RandomAlphabet extends Component {
     lastUsedNodeRowId: -1,
     lastUsedNodeColId: -1,
     value: "",
-    alreadyExists: false
+    alreadyExists: false,
+    errorCount:0
   };
 
   render() {
@@ -211,25 +212,24 @@ class RandomAlphabet extends Component {
       this.setState(() => ({ lastUsedNodeColId: colId }));
 
       successfulNodeCount.push(1);
-
-      this.props.onError(false, this.state.visitedNode);
       
       return;
     } else if(isValid && alreadyExists ){
-      var repeatedLetterCountInInput = this.countCharFromString(targets.innerHTML,this.state.value);
+      var repeatedLetterCountInInput = this.countCharFromString(targets.innerHTML,this.state.value+targets.innerHTML);
       var repeatedLetterCountInVisitedNodeArray = this.state.visitedNode.filter(x=>x.target===targets.innerHTML).length;
 
-      if(repeatedLetterCountInInput<repeatedLetterCountInVisitedNodeArray){
-
+      if(repeatedLetterCountInInput<=repeatedLetterCountInVisitedNodeArray){
       this.setState(()=>({isSuccess: true}));
       successfulNodeCount.push(1);
       }else{
         this.setState(()=>({isSuccess:false}));
+        this.props.onError(true,this.state.visitedNode);
+        this.setState(()=>({errorCount: this.state.errorCount+1}));
       }
     }
     else if(successfulNodeCount.length===0){
       this.setState(() => ({ isSuccess: false }));
-      this.props.onError(true, this.state.visitedNode);
+      this.setState(()=>({errorCount: this.state.errorCount+1}));
     }
   }
 
@@ -241,6 +241,7 @@ class RandomAlphabet extends Component {
 
       this.setState(() => ({ lastUsedNodeColId: -1 }));
       this.setState(() => ({ lastUsedNodeRowId: -1 }));
+      this.setState(()=>({errorCount: 0}));
     }
   }
 
